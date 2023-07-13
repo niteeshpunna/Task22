@@ -12,6 +12,9 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
 
 public class Task22Problem {
@@ -21,27 +24,35 @@ public class Task22Problem {
 		// Create a new instance of the Chrome driver
 			WebDriver d= new ChromeDriver();
 			d.manage().window().maximize();
-			d.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+			
 			d.manage().deleteAllCookies();
 	
 			// Launch the URL
 			d.get("https://phptravels.com/demo/");
 			
+			// Wait until an element is visible on the page
+	        WebDriverWait wait = new WebDriverWait(d, Duration.ofMinutes(2)); // Wait for a maximum of 10 seconds
+	         //wait.until(ExpectedCondition.visibilityOfElementLocated(By 		//visibilityOfElementLocated(By.id("myElement")));
+			
 			//verify the page The Internet
 			assertEquals(d.getTitle(),"Book Your Free Demo Now - Phptravels");
 			
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='first_name']")));
 			//Enter First Name
 			WebElement firstname = d.findElement(By.xpath("//input[@name='first_name']"));
 			firstname.sendKeys("Niteesh");
 			
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@name='last_name']")));
 			//Enter Last Name
 			WebElement lastname = d.findElement(By.xpath("//input[@name='last_name']"));
 			lastname.sendKeys("Kumar");
 			
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//input[@placeholder='Business Name']")));
 			//Enter Business Name
 			WebElement businessname = d.findElement(By.xpath("//input[@placeholder='Business Name']"));
 			businessname.sendKeys("Guvi Business");
 			
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("email")));
 			//Enter email ID
 			WebElement email = d.findElement(By.name("email"));
 			email.sendKeys("testuser@gmail.com");
@@ -70,21 +81,23 @@ public class Task22Problem {
 		
 			// Click on submit
 			d.findElement(By.xpath("//button[@id='demo']")).click();
-			Thread.sleep(2000);
+			//Thread.sleep(2000);
 			
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[@class='text-center cw']")));
 			//Verify ThankYou message
 			WebElement message1 = d.findElement(By.xpath("//h2[@class='text-center cw']"));
 			assertEquals(message1.getText(),"Thank you!");
 			
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//p[@class='text-center cw']")));
 			//Verify the description
 			WebElement message2 = d.findElement(By.xpath("//p[@class='text-center cw']"));
 			assertEquals(message2.getText(),"We have sent your demo credentials to your email please check your email to test demo website. if message not found inbox please check spam folder");
 			
-			Thread.sleep(2000);
+			//Thread.sleep(2000);
 			
 			//Take screenshot
 			File screenshotFile = ((TakesScreenshot) d).getScreenshotAs(OutputType.FILE);
-			//to copy screenshot into local folder
+			//to copy screenshot into local folder & specify the file type
 			FileUtils.copyFile(screenshotFile, new File("F:\\GUVI\\Screenshots\\task22.jpg"));
 			Thread.sleep(2000);
 			
